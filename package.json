@@ -1,0 +1,22 @@
+{
+	"name": "contract",
+	"version": "1.0.0",
+	"description": "",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [],
+	"author": "defilova",
+	"license": "ISC",
+	"type": "commonjs",
+	"devDependencies": {
+		"hardhat": "^2.22.19",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.8.2"
+	},
+	"dependencies": {
+		"@openzeppelin/contracts": "^5.2.0",
+		"dotenv": "^16.4.7",
+		"ethers": "^6.13.5"
+	}
+}
