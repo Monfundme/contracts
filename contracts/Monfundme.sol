@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.28;
 
-contract Monfundme {
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+
+contract Monfundme is ReentrancyGuard {
     struct Campaign {
         uint256 _id;
         string name;
@@ -18,9 +20,10 @@ contract Monfundme {
 
     mapping(uint256 => Campaign) public activeCampaigns;
     mapping(uint256 => Campaign) public completedCampaigns;
-
     uint256 public numberOfActiveCampaigns = 0;
     uint256 public numberOfCompletedCampaigns = 0;
+
+    address public contractOwner;
 
     event CampaignCreated(
         uint256 indexed id,
@@ -29,14 +32,25 @@ contract Monfundme {
         uint256 target,
         uint256 deadline
     );
-
     event CampaignCompleted(uint256 indexed id, uint256 amountCollected);
-
     event DonationReceived(
         uint256 indexed campaignId,
         address indexed donator,
         uint256 amount
     );
+    event CampaignClosed(uint256 indexed id);
+
+    modifier onlyOwner() {
+        require(
+            msg.sender == contractOwner,
+            "Caller is not the contract owner"
+        );
+        _;
+    }
+
+    constructor() {
+        contractOwner = msg.sender;
+    }
 
     function createCampaign(
         address _owner,
@@ -69,7 +83,10 @@ contract Monfundme {
         return campaign._id;
     }
 
-    function donateWithMON(uint256 _id, uint256 _amount) public payable {
+    function donateWithMON(
+        uint256 _id,
+        uint256 _amount
+    ) public payable nonReentrant {
         Campaign storage campaign = activeCampaigns[_id];
         require(block.timestamp < campaign.deadline, "The campaign has ended.");
         require(
@@ -99,7 +116,19 @@ contract Monfundme {
         }
     }
 
-   
+    function closeCampaign(uint256 _id) public onlyOwner {
+        Campaign storage campaign = activeCampaigns[_id];
+        require(campaign.owner != address(0), "Campaign does not exist.");
+
+        completedCampaigns[numberOfCompletedCampaigns] = campaign;
+        numberOfCompletedCampaigns++;
+
+        delete activeCampaigns[_id];
+        numberOfActiveCampaigns--;
+
+        emit CampaignClosed(_id);
+    }
+
     function getCampaignById(
         uint256 _id
     ) public view returns (Campaign memory) {
@@ -144,3 +173,20 @@ contract Monfundme {
         }
         return result;
     }
+
+    function getCompletedCampaigns(
+        uint256 offset,
+        uint256 limit
+    ) public view returns (Campaign[] memory) {
+        uint256 available = numberOfCompletedCampaigns > offset
+            ? numberOfCompletedCampaigns - offset
+            : 0;
+        uint256 length = available < limit ? available : limit;
+        Campaign[] memory result = new Campaign[](length);
+
+        for (uint256 i = 0; i < length; i++) {
+            result[i] = completedCampaigns[offset + i];
+        }
+        return result;
+    }
+}
