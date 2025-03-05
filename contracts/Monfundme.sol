@@ -30,6 +30,14 @@ contract Monfundme {
         uint256 deadline
     );
 
+    event CampaignCompleted(uint256 indexed id, uint256 amountCollected);
+
+    event DonationReceived(
+        uint256 indexed campaignId,
+        address indexed donator,
+        uint256 amount
+    );
+
     function createCampaign(
         address _owner,
         string memory _name,
@@ -61,8 +69,37 @@ contract Monfundme {
         return campaign._id;
     }
 
-    function donateWithMON(uint256 _id, uint256 _amount) public payable {}
+    function donateWithMON(uint256 _id, uint256 _amount) public payable {
+        Campaign storage campaign = activeCampaigns[_id];
+        require(block.timestamp < campaign.deadline, "The campaign has ended.");
+        require(
+            msg.value == _amount,
+            "Sent value does not match the donation amount."
+        );
 
+        campaign.donators.push(msg.sender);
+        campaign.donations.push(_amount);
+        campaign.amountCollected += _amount;
+
+        (bool sent, ) = payable(campaign.owner).call{value: msg.value}("");
+        require(sent, "Failed to send MON to campaign owner.");
+
+        emit DonationReceived(_id, msg.sender, _amount);
+
+        if (
+            campaign.amountCollected >= campaign.target ||
+            block.timestamp >= campaign.deadline
+        ) {
+            completedCampaigns[numberOfCompletedCampaigns] = campaign;
+            numberOfCompletedCampaigns++;
+            delete activeCampaigns[_id];
+            numberOfActiveCampaigns--;
+
+            emit CampaignCompleted(_id, campaign.amountCollected);
+        }
+    }
+
+   
     function getCampaignById(
         uint256 _id
     ) public view returns (Campaign memory) {
@@ -71,15 +108,39 @@ contract Monfundme {
 
     function getCampaignsOfAddress(
         address _owner
-    ) public view returns (Campaign[] memory) {}
+    ) public view returns (Campaign[] memory) {
+        uint256 count = 0;
+        for (uint256 i = 0; i < numberOfActiveCampaigns; i++) {
+            if (activeCampaigns[i].owner == _owner) {
+                count++;
+            }
+        }
+
+        Campaign[] memory result = new Campaign[](count);
+        uint256 index = 0;
+        for (uint256 i = 0; i < numberOfActiveCampaigns; i++) {
+            if (activeCampaigns[i].owner == _owner) {
+                result[index] = activeCampaigns[i];
+                index++;
+            }
+        }
+        return result;
+    }
 
     function getActiveCampaigns(
         uint256 offset,
         uint256 limit
-    ) public view returns (Campaign[] memory) {}
+    ) public view returns (Campaign[] memory) {
+        uint256 available = numberOfActiveCampaigns > offset
+            ? numberOfActiveCampaigns - offset
+            : 0;
+        uint256 length = available < limit ? available : limit;
+        Campaign[] memory result = new Campaign[](length);
 
-    function getCompletedCampaigns(
-        uint256 offset,
-        uint256 limit
-    ) public view returns (Campaign[] memory) {}
-}
+        for (uint256 i = 0; i < length; i++) {
+            result[i] = activeCampaigns[
+                numberOfActiveCampaigns - 1 - offset - i
+            ];
+        }
+        return result;
+    }
