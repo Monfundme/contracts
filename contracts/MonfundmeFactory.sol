@@ -2,12 +2,15 @@
 pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "./MonfundmeCampaign.sol";
 
 contract MonfundmeFactory {
     address[] public deployedCampaigns;
     address public factoryOwner;
+    uint256 public platformFeePercentage = 200; // 2% default fee
 
     event CampaignCreated(address campaignAddress, address owner);
+    event PlatformFeeUpdated(uint256 newFee);
 
     constructor() {
         factoryOwner = msg.sender;
@@ -29,12 +32,20 @@ contract MonfundmeFactory {
             _target,
             _deadline,
             _image,
-            factoryOwner
+            address(this),
+            platformFeePercentage
         );
 
         deployedCampaigns.push(address(newCampaign));
         emit CampaignCreated(address(newCampaign), msg.sender);
         return address(newCampaign);
+    }
+
+    function updatePlatformFee(uint256 _newFee) external {
+        require(msg.sender == factoryOwner, "Not factory owner");
+        require(_newFee <= 1000, "Fee cannot exceed 10%");
+        platformFeePercentage = _newFee;
+        emit PlatformFeeUpdated(_newFee);
     }
 
     function getDeployedCampaigns() public view returns (address[] memory) {

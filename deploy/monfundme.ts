@@ -2,40 +2,28 @@ import { JsonRpcProvider, Wallet, ContractFactory } from "ethers";
 import { config } from "dotenv";
 config();
 
-import { select, input } from "input";
-
-type contractType = "factory" | "vote_executor"
-
 const provider = new JsonRpcProvider(process.env.RPC_URL);
 const wallet = new Wallet(process.env.P_KEY as string, provider);
 
 const deploy = async () => {
 	console.log("starting...");
 
-	const contractType: contractType = await select("Select the contract to deploy", {
-		factory: "Factory",
-		vote_executor: "Vote Executor",
-	});
+	// Deploying factory contract
+	console.log("Deploying Factory Contract");
+	const factoryArt = require("../artifacts/contracts/MonfundmeFactory.sol/MonfundmeFactory.json");
+	const factory = new ContractFactory(factoryArt.abi, factoryArt.bytecode, wallet);
+	const factoryContract = await factory.deploy();
+	await factoryContract.waitForDeployment();
+	const factoryAddress = await factoryContract.getAddress();
+	console.log("Factory Contract deployed to ---- ", factoryAddress);
 
-	if (contractType === "vote_executor") {
-		const inputFactory = await input.text("Enter the factory address");	
-
-		const art: any = import("../artifacts/contracts/MonfundmeFactory.sol/MonfundmeFactory.json");
-		const factory = new ContractFactory(art.abi, art.bytecode, wallet);
-		const ca = await factory.deploy(inputFactory);
-
-		await ca.waitForDeployment();
-
-		console.log("Vote Executor Contract deployed to ---- ", await ca.getAddress());
-	}else {
-		const art: any = await import("../artifacts/contracts/MonfundmeFactory.sol/MonfundmeFactory.json");
-		const factory = new ContractFactory(art.abi, art.bytecode, wallet);
-		const ca = await factory.deploy();
-
-		await ca.waitForDeployment();
-		console.log(" Factory Contract deployed to ---- ", await ca.getAddress());
-	}
-
+	// deploying vote executor contract
+	console.log("Deploying Vote Executor Contract");
+	const voteExecutorArt = require("../artifacts/contracts/VoteExecutor.sol/VoteExecutor.json");
+	const voteExecutorFactory = new ContractFactory(voteExecutorArt.abi, voteExecutorArt.bytecode, wallet);
+	const voteExecutor = await voteExecutorFactory.deploy(factoryAddress);
+	await voteExecutor.waitForDeployment();
+	console.log("Vote Executor Contract deployed to ---- ", await voteExecutor.getAddress());
 };
 
 deploy();
