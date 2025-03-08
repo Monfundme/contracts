@@ -1,0 +1,13 @@
+Voting params... {
+  proposalId: '0xe6da0032b0a32b04a27d07aed88d416419123eee43b93b2c5ef39918b9c01417',
+  startTime: 5224062786,
+  endTime: 5224242786,
+  campaignParams: {
+    campaignOwner: '0xcC84032Cb57340044Ce5e0F29019F75C32c632b9',
+    name: 'Voted first campaign',
+    title: 'Voted first campaign Title',
+    description: 'Voted second campaign Description',
+    target: '1000000000000000000',
+    deadline: 1742630400,
+    image: 'ipfs://voted-campaign'
+  }

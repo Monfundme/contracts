@@ -19,8 +19,11 @@ const deploy = async () => {
 
 	// deploying vote executor contract
 	console.log("Deploying Vote Executor Contract");
+
 	const voteExecutorArt = require("../artifacts/contracts/VoteExecutor.sol/VoteExecutor.json");
 	const voteExecutorFactory = new ContractFactory(voteExecutorArt.abi, voteExecutorArt.bytecode, wallet);
+
+	// const voteExecutor = await voteExecutorFactory.deploy("0xaCe962a2dDC457ff6daD003949d4eDd82592Fda1");
 	const voteExecutor = await voteExecutorFactory.deploy(factoryAddress);
 	await voteExecutor.waitForDeployment();
 	console.log("Vote Executor Contract deployed to ---- ", await voteExecutor.getAddress());

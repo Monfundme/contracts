@@ -2,14 +2,31 @@
 
 pragma solidity ^0.8.24;
 
-import "./interfaces/IMonfundmeFactory.sol";
+interface IMonfundmeFactory {
+    function createCampaign(
+        string memory _name,
+        string memory _title,
+        string memory _description,
+        uint256 _target,
+        uint256 _deadline,
+        string memory _image
+    ) external returns (address);
+
+    function updatePlatformFee(uint256 _newFee) external;
+    function getDeployedCampaigns() external view returns (address[] memory);
+}
+
+pragma solidity ^0.8.24;
 
 contract VoteExecutor {
     struct CampaignParams {
         address campaignOwner;
-        bytes32 metadataHash; // IPFS hash containing name, title, description, image
+        string name;
+        string title;
+        string description;
         uint256 target;
         uint256 deadline;
+        string image;
     }
 
     struct Proposal {
@@ -18,7 +35,7 @@ contract VoteExecutor {
         uint256 endTime;
         bool executed;
         bytes32 resultHash;
-        CampaignParams campaignParams;
+        CampaignParams campaignParams; // Campaign creation parameters
     }
 
     mapping(bytes32 => Proposal) public proposals;
@@ -113,6 +130,7 @@ contract VoteExecutor {
     ) external {
         Proposal storage proposal = proposals[_proposalId];
         require(!proposal.executed, "Already executed");
+        // require(block.timestamp > proposal.endTime, "Voting period not ended");
         require(_signatures.length >= minValidators, "Insufficient validators");
 
         // Verify signatures
@@ -121,15 +139,14 @@ contract VoteExecutor {
         );
         _verifySignatures(messageHash, _signatures);
 
-        // Generate a unique ID for the campaign using the proposal hash
-        bytes12 campaignId = bytes12(keccak256(abi.encodePacked(_proposalId)));
-
+        // Create campaign through factory
         address newCampaign = factory.createCampaign(
-            campaignId,
-            proposal.campaignParams.campaignOwner,
-            proposal.campaignParams.metadataHash,
+            proposal.campaignParams.name,
+            proposal.campaignParams.title,
+            proposal.campaignParams.description,
             proposal.campaignParams.target,
-            proposal.campaignParams.deadline
+            proposal.campaignParams.deadline,
+            proposal.campaignParams.image
         );
 
         proposal.executed = true;

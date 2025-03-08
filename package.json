@@ -3,13 +3,21 @@
 	"version": "1.0.0",
 	"description": "monfundme contracts ",
 	"scripts": {
-		"deploy": "ts-node deploy/monfundme.ts"
+		"deploy": "ts-node deploy/monfundme.ts",
+		"vote": "ts-node test/vote.ts",
+		"execute": "ts-node test/executeVote.ts",
+		"simple": "ts-node deploy/simple.ts",
+		"add": "ts-node test/addValidator.ts",
+		"create": "ts-node test/create.ts",
+		"set": "ts-node test/set.ts",
+		"check": "ts-node test/checkCampaigns.ts"
 	},
 	"keywords": [],
 	"author": "defilova",
 	"license": "ISC",
 	"type": "commonjs",
 	"devDependencies": {
+		"@nomicfoundation/hardhat-verify": "^2.0.13",
 		"hardhat": "^2.22.19",
 		"ts-node": "^10.9.2",
 		"typescript": "^5.8.2"

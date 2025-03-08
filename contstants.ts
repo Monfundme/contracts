@@ -1,4 +1,10 @@
-// export const monfundme_factory = "0xeF435786af64ba812405C313E24fF36B8465B468";
-export const monfundme_factory = "0xBF8B64c70D993CEB8398Fd822E28DCb3F97c9Ddf";
+// // sepolia
+// export const monfundme_factory = "0x11d86daa80c52BffbAd656d0bDaF2E8EF8A2F8C9";
+// export const monfundme_vote_executor =
+//     "0xd284A61b0E4f2BC2Ad6707d788c590C208f7460D";
+
+
+// monad
+export const monfundme_factory = "0xB3CF8637344Bd36108EA25008308A3fD6CcF3e4D";
 export const monfundme_vote_executor =
-    "0x39F07De948dF5ef57D39d0393E5D180a401a0A69";
+    "0x6efc3882a54e227737C3c105c73C549064D15437";
