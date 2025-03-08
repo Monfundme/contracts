@@ -7,4 +7,4 @@
 // monad
 export const monfundme_factory = "0xB3CF8637344Bd36108EA25008308A3fD6CcF3e4D";
 export const monfundme_vote_executor =
-    "0x6efc3882a54e227737C3c105c73C549064D15437";
+    "0xdF78F4b2eCaE027ec6AE607F1fe447b053e52B52";

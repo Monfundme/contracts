@@ -215,6 +215,10 @@ contract MonfundmeCampaign is ReentrancyGuard {
         emit StatusUpdated(CampaignStatus.Completed);
     }
 
+    receive() external payable {
+        revert("Direct transfers not allowed. Use donateWithMON() instead");
+    }
+
     /// @notice Closes the campaign
     function closeCampaign() public onlyOwner {
         require(

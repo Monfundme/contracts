@@ -27,15 +27,12 @@ const main = async () => {
 
             console.log(" --------------------------------------------------------------");
             console.log("Address:", campaignAddress);
-            console.log("Name:", campaignDetails.name);
             console.log("Owner:", campaignDetails.owner);
-            console.log("Title:", campaignDetails.title);
-            console.log("Description:", campaignDetails.description);
             console.log("Target:", campaignDetails.target.toString());
             console.log("Deadline:", new Date(Number(campaignDetails.deadline) * 1000).toLocaleString());
             console.log("Amount Collected:", campaignDetails.amountCollected.toString());
-            console.log("Image:", campaignDetails.image);
-            console.log("Number of Donators:", campaignDetails.donators?.length);
+            console.log("metadataHash:", campaignDetails.metadataHash);
+            console.log(" --------------------------------------------------------------");
         }
 
     } catch (error) {

@@ -4,13 +4,14 @@
 	"description": "monfundme contracts ",
 	"scripts": {
 		"deploy": "ts-node deploy/monfundme.ts",
-		"vote": "ts-node test/vote.ts",
-		"execute": "ts-node test/executeVote.ts",
+		"vote": "ts-node scripts/vote.ts",
+		"execute": "ts-node scripts/executeVote.ts",
 		"simple": "ts-node deploy/simple.ts",
-		"add": "ts-node test/addValidator.ts",
-		"create": "ts-node test/create.ts",
-		"set": "ts-node test/set.ts",
-		"check": "ts-node test/checkCampaigns.ts"
+		"add": "ts-node scripts/addValidator.ts",
+		"create": "ts-node scripts/create.ts",
+		"set": "ts-node scripts/set.ts",
+		"check": "ts-node scripts/checkCampaigns.ts",
+		"donate": "ts-node scripts/donate.ts"
 	},
 	"keywords": [],
 	"author": "defilova",

@@ -1,4 +1,4 @@
-import { Wallet, JsonRpcProvider, Contract, toUtf8Bytes, keccak256 } from "ethers";
+import { Wallet, JsonRpcProvider, Contract, toUtf8Bytes, keccak256, parseEther } from "ethers";
 import { monfundme_vote_executor } from "../contstants";
 import dotenv from "dotenv";
 import { CampaignParams, ProposalConfig } from "../types";
@@ -16,16 +16,16 @@ const main = async () => {
     console.log("Creating proposal...");
     const campaignParams: CampaignParams = {
       campaignOwner: "0xF519363b26ab80f22C953e27DB1E1b9E053d1A34",
-      metadataHash: keccak256(toUtf8Bytes("Test Campaign 2")),
-      target: BigInt(1e18), // 1 MON
+      metadataHash: keccak256(toUtf8Bytes("TEST 2")),
+      target: parseEther("1"), // 1 MON
       deadline: Math.floor(Date.now() / 1000) + 86400 // 24 hours from now
     };
 
     // Proposal configuration
     const proposalConfig: ProposalConfig = {
-      proposalId: keccak256(toUtf8Bytes("Test Proposal 2")), // Generate unique proposal ID
-      startTime: Math.floor(Date.now() / 1000) + 300, // Start in 5 minutes
-      endTime: Math.floor(Date.now() / 1000) + 3600, // End in 1 hour
+      proposalId: keccak256(toUtf8Bytes("2")), // Generate unique proposal ID
+      startTime: Math.floor(Date.now() / 1000) + 300, //300 milliseconds 
+      endTime: Math.floor(Date.now() / 1000) + 2 * 1000, // 2 seconds
       campaignParams: campaignParams
     };
 
