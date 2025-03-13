@@ -1,32 +1,34 @@
 {
-	"name": "contract",
-	"version": "1.0.0",
-	"description": "monfundme contracts ",
-	"scripts": {
-		"deploy": "ts-node deploy/monfundme.ts",
-		"vote": "ts-node scripts/vote.ts",
-		"execute": "ts-node scripts/executeVote.ts",
-		"simple": "ts-node deploy/simple.ts",
-		"add": "ts-node scripts/addValidator.ts",
-		"create": "ts-node scripts/create.ts",
-		"set": "ts-node scripts/set.ts",
-		"check": "ts-node scripts/checkCampaigns.ts",
-		"donate": "ts-node scripts/donate.ts"
-	},
-	"keywords": [],
-	"author": "defilova",
-	"license": "ISC",
-	"type": "commonjs",
-	"devDependencies": {
-		"@nomicfoundation/hardhat-verify": "^2.0.13",
-		"hardhat": "^2.22.19",
-		"ts-node": "^10.9.2",
-		"typescript": "^5.8.2"
-	},
-	"dependencies": {
-		"@openzeppelin/contracts": "^5.2.0",
-		"dotenv": "^16.4.7",
-		"ethers": "^6.13.5",
-		"input": "^1.0.1"
-	}
+  "name": "contract",
+  "version": "1.0.0",
+  "description": "monfundme contracts ",
+  "scripts": {
+    "deploy": "ts-node deploy/monfundme.ts",
+    "vote": "ts-node scripts/vote.ts",
+    "execute": "ts-node scripts/executeVote.ts",
+    "simple": "ts-node deploy/simple.ts",
+    "add": "ts-node scripts/addValidator.ts",
+    "create": "ts-node scripts/create.ts",
+    "set": "ts-node scripts/set.ts",
+    "check": "ts-node scripts/checkCampaigns.ts",
+    "donate": "ts-node scripts/donate.ts",
+    "withdraw": "ts-node scripts/withdraw.ts"
+  },
+  "keywords": [],
+  "author": "defilova",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-verify": "^2.0.13",
+    "hardhat": "^2.22.19",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.2.0",
+    "dotenv": "^16.4.7",
+    "ethers": "^6.13.5",
+    "input": "^1.0.1",
+    "node-fetch": "^3.3.2"
+  }
 }

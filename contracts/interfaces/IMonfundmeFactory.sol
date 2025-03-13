@@ -6,7 +6,9 @@ interface IMonfundmeFactory {
     function createCampaign(
         bytes12 _id,
         address _campaignOwner,
-        bytes32 _metadataHash,
+        string memory _title,
+        string memory _description,
+        string memory _image,
         uint256 _target,
         uint256 _deadline
     ) external returns (address);

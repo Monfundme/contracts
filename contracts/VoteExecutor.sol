@@ -7,7 +7,9 @@ import "./interfaces/IMonfundmeFactory.sol";
 contract VoteExecutor {
     struct CampaignParams {
         address campaignOwner;
-        bytes32 metadataHash; // IPFS hash containing name, title, description, image
+        string title;
+        string description;
+        string image;
         uint256 target;
         uint256 deadline;
     }
@@ -142,7 +144,9 @@ contract VoteExecutor {
             newCampaign = factory.createCampaign(
                 campaignId,
                 proposal.campaignParams.campaignOwner,
-                proposal.campaignParams.metadataHash,
+                proposal.campaignParams.title,
+                proposal.campaignParams.description,
+                proposal.campaignParams.image,
                 proposal.campaignParams.target,
                 proposal.campaignParams.deadline
             );

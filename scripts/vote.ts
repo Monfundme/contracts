@@ -16,14 +16,17 @@ const main = async () => {
     console.log("Creating proposal...");
     const campaignParams: CampaignParams = {
       campaignOwner: "0xF519363b26ab80f22C953e27DB1E1b9E053d1A34",
-      metadataHash: keccak256(toUtf8Bytes("TEST 2")),
-      target: parseEther("1"), // 1 MON
-      deadline: Math.floor(Date.now() / 1000) + 86400 // 24 hours from now
+      title: "Trying out withdrawal",
+      description: "Trying out withdrawal",
+      image: "https://hadassahbridals.com.ng/wp-content/uploads/2024/01/WhatsApp-Image-2023-07-29-at-12.05.46-1-600x799.jpg",
+      target: parseEther("10"), // 1 MON
+      // deadline: 1741993540// 24 hours from now
+      deadline: Math.floor(Date.now() / 1000) + 50400 // 24 hours from now
     };
 
     // Proposal configuration
     const proposalConfig: ProposalConfig = {
-      proposalId: keccak256(toUtf8Bytes("2")), // Generate unique proposal ID
+      proposalId: keccak256(toUtf8Bytes("001")), // Generate unique proposal ID
       startTime: Math.floor(Date.now() / 1000) + 300, //300 milliseconds 
       endTime: Math.floor(Date.now() / 1000) + 2 * 1000, // 2 seconds
       campaignParams: campaignParams
