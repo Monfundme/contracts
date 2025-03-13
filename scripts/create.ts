@@ -1,6 +1,6 @@
 
 import { monfundme_factory } from "../contstants";
-import { Contract, hexlify, JsonRpcProvider, keccak256, parseEther, randomBytes, toUtf8Bytes, Wallet, } from "ethers";
+import { Contract, JsonRpcProvider, keccak256, parseEther, randomBytes, toUtf8Bytes, Wallet, } from "ethers";
 import factoryAbi from "../artifacts/contracts/MonfundmeFactory.sol/MonfundmeFactory.json";
 import dotenv from "dotenv";
 
@@ -14,10 +14,10 @@ async function main() {
     const factory = new Contract(monfundme_factory, factoryAbi.abi, wallet);
 
     // Campaign parameters
-    const campaignId = randomBytes(12); // Generate random 12 byte ID
+    const campaignId = randomBytes(100); // Generate random 12 byte ID
     const campaignOwner = wallet.address;
     const metadataHash = keccak256(toUtf8Bytes("Test Campaign")); // Example metadata hash
-    const target = parseEther("1"); // 1 MON target
+    const target = parseEther("1.4"); // 1 MON target
     const deadline = Math.floor(Date.now() / 1000) + 86400; // 24 hours from now
 
     try {

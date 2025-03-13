@@ -1,12 +1,14 @@
 export interface CampaignParams {
     campaignOwner: string;
-    metadataHash: string; // bytes32 hash
+    title: string;
+    description: string;
+    image: string;
     target: bigint;
     deadline: number;
 }
 
 export interface ProposalConfig {
-    proposalId: string; // bytes32 hash
+    proposalId: string;
     startTime: number;
     endTime: number;
     campaignParams: CampaignParams;

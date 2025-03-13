@@ -1,4 +1,4 @@
-import { Contract, Wallet, JsonRpcProvider } from "ethers";
+import { Contract, Wallet, JsonRpcProvider, formatEther } from "ethers";
 import { monfundme_factory } from "../contstants";
 import dotenv from "dotenv";
 
@@ -14,7 +14,7 @@ const factory = new Contract(monfundme_factory, factoryArt.abi, wallet);
 
 const main = async () => {
     try {
-
+        console.log("checking campaigns... ")
         const deployedCampaigns = await factory.getDeployedCampaigns();
         console.log("Total campaigns:", deployedCampaigns.length);
 
@@ -28,10 +28,12 @@ const main = async () => {
             console.log(" --------------------------------------------------------------");
             console.log("Address:", campaignAddress);
             console.log("Owner:", campaignDetails.owner);
-            console.log("Target:", campaignDetails.target.toString());
+            console.log("Target:", formatEther(campaignDetails.target));
             console.log("Deadline:", new Date(Number(campaignDetails.deadline) * 1000).toLocaleString());
-            console.log("Amount Collected:", campaignDetails.amountCollected.toString());
-            console.log("metadataHash:", campaignDetails.metadataHash);
+            console.log("Amount Collected:", formatEther(campaignDetails.amountCollected));
+            console.log("title:", campaignDetails.title);
+            console.log("description:", campaignDetails.description);
+            console.log("image:", campaignDetails.image);
             console.log(" --------------------------------------------------------------");
         }
 

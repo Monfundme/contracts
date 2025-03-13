@@ -25,7 +25,7 @@ const validator2 = new Wallet(process.env.v_2 as string, provider);
 const executeVote = async () => {
     try {
 
-        const proposalId = keccak256(toUtf8Bytes("2"));
+        const proposalId = "0x724f6bdc92705714b251fdfe205b952f71c1b25dac823eb448ff509b43ca2005";
         const resultHash = keccak256(toUtf8Bytes("YES_CREATE_THIS_CAMPAIGN"));
 
         const messageHash = keccak256(
@@ -44,12 +44,13 @@ const executeVote = async () => {
         console.log("Executing proposal...");
         const executeTx = await voteExecutor.executeResult(
             proposalId,
-            false,
+            true,
             resultHash,
             signatures
         );
         await executeTx.wait();
         console.log("Proposal executed successfully!");
+
 
     } catch (error) {
         console.log("Error ---- ", error);

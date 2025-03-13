@@ -45,18 +45,24 @@ contract MonfundmeFactory {
     function createCampaign(
         bytes12 _id,
         address _campaignOwner,
-        bytes32 _metadataHash,
+        string memory _title,
+        string memory _description,
+        string memory _image,
         uint256 _target,
         uint256 _deadline
     ) public onlyVoteExecutor returns (address) {
         require(_campaignOwner != address(0), "Invalid campaign owner address");
         require(_target > 0, "Target amount must be greater than 0");
-        require(_metadataHash != bytes32(0), "Metadata hash cannot be empty");
+        require(bytes(_title).length > 0, "Title cannot be empty");
+        require(bytes(_description).length > 0, "Description cannot be empty");
+        require(bytes(_image).length > 0, "Image URL cannot be empty");
 
         MonfundmeCampaign newCampaign = new MonfundmeCampaign(
             _id,
             _campaignOwner,
-            _metadataHash,
+            _title,
+            _description,
+            _image,
             _target,
             _deadline,
             address(this),
@@ -79,6 +85,12 @@ contract MonfundmeFactory {
     function getDeployedCampaigns() public view returns (address[] memory) {
         return deployedCampaigns;
     }
+
+    /// @notice Receive function to allow contract to receive ETH
+    receive() external payable {}
+
+    /// @notice Fallback function to allow contract to receive ETH
+    fallback() external payable {}
 }
 
 /// @title MonfundmeCampaign
@@ -92,7 +104,9 @@ contract MonfundmeCampaign is ReentrancyGuard {
 
     struct Campaign {
         bytes12 _id;
-        bytes32 metadataHash; // IPFS hash containing name, title, description, image
+        string title;
+        string description;
+        string image;
         address owner;
         uint256 target;
         uint256 deadline;
@@ -118,7 +132,9 @@ contract MonfundmeCampaign is ReentrancyGuard {
     constructor(
         bytes12 _id,
         address _campaignOwner,
-        bytes32 _metadataHash,
+        string memory _title,
+        string memory _description,
+        string memory _image,
         uint256 _target,
         uint256 _deadline,
         address _contractOwner,
@@ -134,7 +150,9 @@ contract MonfundmeCampaign is ReentrancyGuard {
         platformFeePercentage = _platformFeePercentage;
 
         campaign._id = _id;
-        campaign.metadataHash = _metadataHash;
+        campaign.title = _title;
+        campaign.description = _description;
+        campaign.image = _image;
         campaign.owner = _campaignOwner;
         campaign.target = _target;
         campaign.deadline = _deadline;
@@ -237,7 +255,9 @@ contract MonfundmeCampaign is ReentrancyGuard {
         view
         returns (
             bytes12 id,
-            bytes32 metadataHash,
+            string memory title,
+            string memory description,
+            string memory image,
             address owner,
             uint256 target,
             uint256 deadline,
@@ -249,7 +269,9 @@ contract MonfundmeCampaign is ReentrancyGuard {
     {
         return (
             campaign._id,
-            campaign.metadataHash,
+            campaign.title,
+            campaign.description,
+            campaign.image,
             campaign.owner,
             campaign.target,
             campaign.deadline,

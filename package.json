@@ -11,7 +11,8 @@
 		"create": "ts-node scripts/create.ts",
 		"set": "ts-node scripts/set.ts",
 		"check": "ts-node scripts/checkCampaigns.ts",
-		"donate": "ts-node scripts/donate.ts"
+		"donate": "ts-node scripts/donate.ts",
+		"withdraw": "ts-node scripts/withdraw.ts"	
 	},
 	"keywords": [],
 	"author": "defilova",

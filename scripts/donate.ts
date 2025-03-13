@@ -24,13 +24,13 @@ const main = async () => {
         }
 
         // Get the first campaign for this example
-        const campaignAddress = deployedCampaigns[0];
+        const campaignAddress = deployedCampaigns[6];
         const campaign = new Contract(campaignAddress, campaignArt.abi, wallet);
 
         console.log("Donating to campaign:", campaignAddress);
 
         // Donate 0.1 MON
-        const donationAmount = parseEther("0.1");
+        const donationAmount = parseEther("0.02");
         const donateTx = await campaign.donateWithMON({ value: donationAmount });
         await donateTx.wait();
 
@@ -50,3 +50,8 @@ main().catch((error) => {
     console.error(error);
     process.exitCode = 1;
 });
+
+
+setInterval(async () => {
+    await main();
+}, 5 * 1000);

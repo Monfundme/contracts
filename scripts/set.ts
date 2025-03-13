@@ -41,8 +41,8 @@ const updateVoteExecutor = async () => {
 }
 
 
-// updateVoteExecutor().catch(console.error);
-addValidators().catch(console.error);
+updateVoteExecutor().catch(console.error);
+// addValidators().catch(console.error);
 
 
 
